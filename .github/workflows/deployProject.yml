@@ -1,0 +1,12 @@
+name: Deploye Project
+on: [push,workflow_dispatch]
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: 'Deploy sheets'
+            run: |
+              echo "deploy"
+              echo "${{github}}"
+              git clone https://github.com/akku27-cse/ci_cd_learning_reactjs.git
