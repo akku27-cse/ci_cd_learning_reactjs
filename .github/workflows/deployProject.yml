@@ -26,7 +26,9 @@ jobs:
         run: |
           cd ci_cd_learning_reactjs
           npm run test
-  deploye:
+  
+  build:
+     needs: tests
      runs-on: ubuntu-latest
      steps:
        - name: Get Code
@@ -45,7 +47,19 @@ jobs:
          run: |
           cd ci_cd_learning_reactjs
           npm run build
+       - name: Upload Artifacts
+         uses: actions/upload-artifact@v4
+         with:
+           name: dist-files
+           path: dist
+  deploye:
+     needs: build
+     runs-on: ubuntu-latest
+     steps:
+       - name: Download Artifacts
+         uses: actions/download-artifact@v4
+         with:
+           name: dist-files
+           path: dist
        - name: Deployee
          run: echo "Deploye Successfull"
-
-
