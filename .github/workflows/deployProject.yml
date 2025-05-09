@@ -5,11 +5,9 @@ on: [push, workflow_dispatch]
 jobs:
   tests:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 'Deploy sheets'
+      - name: 'Clone repo'
         run: |
-          echo "deploy"
           git clone https://github.com/akku27-cse/ci_cd_learning_reactjs.git
 
       - name: Install Node.js
@@ -26,40 +24,45 @@ jobs:
         run: |
           cd ci_cd_learning_reactjs
           npm run test
-  
+
   build:
-     needs: tests
-     runs-on: ubuntu-latest
-     steps:
-       - name: Get Code
-         run: |
-          echo "deploy"
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        run: |
           git clone https://github.com/akku27-cse/ci_cd_learning_reactjs.git
-       - name: Install Node.js
-         uses: actions/setup-node@v4
-         with:
-            node-version: 20 
-       - name: Install dependencies
-         run: |
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
           cd ci_cd_learning_reactjs
           npm install
-       - name: Build Projects
-         run: |
+
+      - name: Build Project
+        run: |
           cd ci_cd_learning_reactjs
           npm run build
-       - name: Upload Artifacts
-         uses: actions/upload-artifact@v4
-         with:
-           name: dist-files
-           path: dist
-  deploye:
-     needs: build
-     runs-on: ubuntu-latest
-     steps:
-       - name: Download Artifacts
-         uses: actions/download-artifact@v4
-         with:
-           name: dist-files
-           path: dist
-       - name: Deployee
-         run: echo "Deploye Successfull"
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: ci_cd_learning_reactjs/build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: build
+
+      - name: Deploy
+        run: echo "Deploy Successful"
