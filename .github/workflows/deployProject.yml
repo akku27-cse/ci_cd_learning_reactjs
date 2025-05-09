@@ -10,3 +10,12 @@ jobs:
               echo "deploy"
               echo "${{github}}"
               git clone https://github.com/akku27-cse/ci_cd_learning_reactjs.git
+          - name: Install Node jobs
+            uses: actions/setup-node@v4
+            with:
+              node-version: 20
+          - name: Install dependencies
+            run: npm ci
+          - name: Run test
+            run: npm run test
+
