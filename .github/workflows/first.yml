@@ -1,0 +1,8 @@
+name: First
+on: push
+jobs:
+  Greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "First tools"
+        run: echo "First CiCd practice program"
