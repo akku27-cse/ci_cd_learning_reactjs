@@ -26,3 +26,26 @@ jobs:
         run: |
           cd ci_cd_learning_reactjs
           npm run test
+  deploye:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Get Code
+         run: |
+          echo "deploy"
+          git clone https://github.com/akku27-cse/ci_cd_learning_reactjs.git
+       - name: Install Node.js
+         uses: actions/setup-node@v4
+         with:
+            node-version: 20 
+       - name: Install dependencies
+         run: |
+          cd ci_cd_learning_reactjs
+          npm install
+       - name: Build Projects
+         run: |
+          cd ci_cd_learning_reactjs
+          npm run build
+       - name: Deployee
+         run: echo "Deploye Successfull"
+
+
