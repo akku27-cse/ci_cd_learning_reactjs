@@ -7,8 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo
-        run: |
-          git clone https://github.com/akku27-cse/ci_cd_learning_reactjs.git
+        uses: actions/checkout@v4
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -16,22 +15,17 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: |
-          cd ci_cd_learning_reactjs
-          npm install
+        run: npm install
 
       - name: Run tests
-        run: |
-          cd ci_cd_learning_reactjs
-          npm run test
+        run: npm run test
 
   build:
     needs: tests
     runs-on: ubuntu-latest
     steps:
-      - name: Clone repo
-        run: |
-          git clone https://github.com/akku27-cse/ci_cd_learning_reactjs.git
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -39,20 +33,16 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: |
-          cd ci_cd_learning_reactjs
-          npm install
+        run: npm install
 
       - name: Build Project
-        run: |
-          cd ci_cd_learning_reactjs
-          npm run build
+        run: npm run build
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-files
-          path: ci_cd_learning_reactjs/build
+          name: github-pages
+          path: build
 
   deploy:
     needs: build
@@ -69,7 +59,7 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-files
+          name: github-pages
           path: ./build
 
       - name: Upload GitHub Pages artifact
